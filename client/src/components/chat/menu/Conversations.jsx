@@ -23,7 +23,7 @@ const Conversations = ({ text }) => {
   const [users, setUsers] = useState([]);
   // for storing the response from the useEffect, we created this state
 
-  const { account } = useContext(AccountContext);
+  const { account, socket, setActiveUsers } = useContext(AccountContext);
 
   // Component did mount after that we have to call the api, here its replacement is useEffect hook
   useEffect(() => {
@@ -36,6 +36,13 @@ const Conversations = ({ text }) => {
   }, [text]);
   // second argument is Dependency Array, i.e when we have to call the useEffect. We have to call only when component mounts,
   // therefore empty array []
+
+  useEffect(() => {
+    socket.current.emit('addUsers', account);
+    socket.current.on('getUsers', users => {
+      setActiveUsers(users);
+    });
+  }, [account, setActiveUsers, socket]);
 
   return (
     <Component>

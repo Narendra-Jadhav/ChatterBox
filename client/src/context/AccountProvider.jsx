@@ -1,6 +1,7 @@
-// Context API has been used for State Management
+// Context API has been used for State Management. It is like Redux
+import { createContext, useState, useRef, useEffect } from "react";
 
-import { createContext, useState } from "react";
+import { io } from "socket.io-client";
 
 export const AccountContext = createContext(null);
 
@@ -8,9 +9,29 @@ const AccountProvider = ({ children }) => {
   const [account, setAccount] = useState();
   // account and setAccount are states
   const [person, setPerson] = useState({});
+  const [activeUsers, setActiveUsers] = useState([]);
+  const [newMessageFlag, setNewMessageFlag] = useState(false);
+
+  const socket = useRef();
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:9000");
+  }, []);
 
   return (
-    <AccountContext.Provider value={{ account, setAccount, person, setPerson }}>
+    <AccountContext.Provider
+      value={{
+        account,
+        setAccount,
+        person,
+        setPerson,
+        socket,
+        activeUsers,
+        setActiveUsers,
+        newMessageFlag,
+        setNewMessageFlag,
+      }}
+    >
       {children}
     </AccountContext.Provider>
   );
