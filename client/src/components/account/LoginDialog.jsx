@@ -4,6 +4,7 @@ import { Dialog, Box, Typography, List, ListItem, styled } from "@mui/material";
 // Typography is the alternative of 'p'
 
 import { AccountContext } from "../../context/AccountProvider";
+import { addUser } from "../../service/api";
 
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
@@ -34,10 +35,11 @@ const LoginDialog = () => {
 
     const { setAccount } = useContext(AccountContext);
 
-  const onLoginSuccess = (res) => {
+  const onLoginSuccess = async (res) => {
     const decoded = jwt_decode(res.credential);
     console.log(decoded);
     setAccount(decoded);
+    await addUser(decoded);
   };
 
   const onLoginError = (res) => {

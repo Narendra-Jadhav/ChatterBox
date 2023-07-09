@@ -35,6 +35,7 @@ const Image = styled("img")({
   height: 40,
   width: 40,
   borderRadius: "50%",
+  cursor: 'pointer'
 });
 
 const Header = () => {
